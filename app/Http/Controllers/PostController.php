@@ -9,13 +9,13 @@ use App\Http\Services\PostCheckImageService;
 use App\Http\Services\PostDeleteImageService;
 use App\Http\Services\PostUploadImageService;
 use App\Http\Traits\ApiResponseTrait;
-use App\Http\Traits\Post\PostTrait;
+use App\Http\Traits\Redis\PostRedis;
 use App\Models\Post;
 
 class PostController extends Controller
 {
     private $postModel;
-    use ApiResponseTrait, PostTrait;
+    use ApiResponseTrait, PostRedis;
     public function __construct(Post $post)
     {
         $this->postModel = $post;
@@ -23,7 +23,7 @@ class PostController extends Controller
 
     public function index()
     {
-        return $this->apiResponse(200, 'Posts Data', null, $this->getPosts());
+        return $this->apiResponse(200, 'Posts Data', null, $this->getPostsFromRedis());
     }
 
     public function create(CreatePostRequest $request, PostUploadImageService $service)
@@ -34,6 +34,7 @@ class PostController extends Controller
             'media' => $image,
             'content' => $request->body
         ]);
+        $this->setPostsIntoRedis();
         return $this->apiResponse(200, 'Post Was Create', null, $post);
     }
 
@@ -42,6 +43,7 @@ class PostController extends Controller
         $post = $this->findPostById($request->id);
         $service->deleteImageInLocal($post->media);
         $post->delete();
+        $this->setPostsIntoRedis();
         return $this->apiResponse(200, 'Post Was Delete');
     }
 
@@ -54,6 +56,7 @@ class PostController extends Controller
             'media' => $image,
             'content' => $request->body
         ]);
+        $this->setPostsIntoRedis();
         return $this->apiResponse(200, 'Post Was Update');
     }
 }
