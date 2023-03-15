@@ -24,7 +24,6 @@ class UpdateCarouselRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:carousels,id',
             'post_id' => 'required|integer|exists:posts,id',
             'image' => 'image|mimes:png,jpg,webp,jpeg',
             'video' => 'file'

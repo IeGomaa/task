@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Carousel\CreateCarouselRequest;
-use App\Http\Requests\Carousel\DeleteCarouselRequest;
 use App\Http\Requests\Carousel\UpdateCarouselRequest;
 use App\Http\Services\Carousel\CarouselCheckImageService;
 use App\Http\Services\Carousel\CarouselDeleteImageService;
@@ -38,25 +37,31 @@ class CarouselController extends Controller
         return $this->apiResponse(200, 'Carousel Was Create');
     }
 
-    public function delete(DeleteCarouselRequest $request, CarouselDeleteImageService $service)
+    public function delete($carousel_id, CarouselDeleteImageService $service)
     {
-        $carousel = $this->findCarouselById($request->id);
-        $service->deleteImageInLocal($carousel->image);
-        $service->deleteImageInLocal($carousel->video);
-        $carousel->delete();
-        return $this->apiResponse(200, 'Carousel Was Delete');
+        $carousel = $this->findCarouselById($carousel_id);
+        if ($carousel) {
+            $service->deleteImageInLocal($carousel->image);
+            $service->deleteImageInLocal($carousel->video);
+            $carousel->delete();
+            return $this->apiResponse(200, 'Carousel Was Delete');
+        }
+        return $this->apiResponse(200, 'Carousel Not Found');
     }
 
-    public function update(UpdateCarouselRequest $request, CarouselCheckImageService $service)
+    public function update($carousel_id, UpdateCarouselRequest $request, CarouselCheckImageService $service)
     {
-        $carousel = $this->findCarouselById($request->id);
-        $image = $service->checkImage($request->image, $carousel);
-        $video = $service->checkImage($request->video, $carousel);
-        $carousel->update([
-            'image' => $image,
-            'video' => $video,
-            'post_id' => $request->post_id
-        ]);
-        return $this->apiResponse(200, 'Carousel Was Update');
+        $carousel = $this->findCarouselById($carousel_id);
+        if ($carousel) {
+            $image = $service->checkImage($request->image, $carousel);
+            $video = $service->checkImage($request->video, $carousel);
+            $carousel->update([
+                'image' => $image,
+                'video' => $video,
+                'post_id' => $request->post_id
+            ]);
+            return $this->apiResponse(200, 'Carousel Was Update');
+        }
+        return $this->apiResponse(200, 'Carousel Not Found');
     }
 }

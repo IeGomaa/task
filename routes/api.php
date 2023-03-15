@@ -27,6 +27,6 @@ Route::group(['prefix' => 'post'], function () {
 Route::group(['prefix' => 'carousel'], function () {
     Route::get('index', [CarouselController::class, 'index']);
     Route::post('create', [CarouselController::class, 'create']);
-    Route::post('delete', [CarouselController::class, 'delete']);
-    Route::post('update', [CarouselController::class, 'update']);
+    Route::post('delete/{id}', [CarouselController::class, 'delete']);
+    Route::post('update/{id}', [CarouselController::class, 'update']);
 });

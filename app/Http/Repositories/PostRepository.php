@@ -19,7 +19,7 @@ class PostRepository implements PostInterface
     public function index()
     {
         $posts = $this->getPostsFromRedis();
-        if ($posts->isEmpty()) {
+        if (collect($posts)->isEmpty()) {
             return $this->apiResponse(404, 'Posts Empty');
         }
         return $this->apiResponse(200, 'Posts Data', null, ['post' => $posts]);
