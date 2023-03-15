@@ -6,7 +6,7 @@ trait CarouselTrait
 {
     private function getCarousels()
     {
-        return $this->carouselModel::with('posts')->get();
+        return $this->carouselModel::get();
     }
 
     private function findCarouselById($id)

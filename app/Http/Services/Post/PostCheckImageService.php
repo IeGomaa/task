@@ -13,7 +13,7 @@ class PostCheckImageService
     public function checkImage($image, $post): string
     {
         if (!is_null($image)) {
-            $imageName = $this->service->uploadImage($image, $post->image);
+            $imageName = $this->service->uploadImage($image, $post->media);
         } else {
             $imageName = $post->getRawOriginal('media');
         }

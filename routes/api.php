@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'post'], function () {
     Route::controller(PostController::class)->group(function () {
         Route::get('index', 'index');
+        Route::get('getPost/{id}', 'getPost');
         Route::post('create', 'create');
         Route::post('delete', 'delete');
         Route::post('update', 'update');
@@ -25,8 +26,11 @@ Route::group(['prefix' => 'post'], function () {
 });
 
 Route::group(['prefix' => 'carousel'], function () {
-    Route::get('index', [CarouselController::class, 'index']);
-    Route::post('create', [CarouselController::class, 'create']);
-    Route::post('delete/{id}', [CarouselController::class, 'delete']);
-    Route::post('update/{id}', [CarouselController::class, 'update']);
+    Route::controller(CarouselController::class)->group(function () {
+        Route::get('index', [CarouselController::class, 'index']);
+        Route::get('getCarousel/{id}', [CarouselController::class, 'getCarousel']);
+        Route::post('create', [CarouselController::class, 'create']);
+        Route::post('delete', [CarouselController::class, 'delete']);
+        Route::post('update', [CarouselController::class, 'update']);
+    });
 });

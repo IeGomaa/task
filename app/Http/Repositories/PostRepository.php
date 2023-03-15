@@ -18,10 +18,18 @@ class PostRepository implements PostInterface
 
     public function index()
     {
+        // Normal
+        $posts = $this->getPosts();
+        if ($posts->isEmpty()) {
+            return $this->apiResponse(404, 'Posts Empty');
+        }
+        // For Redis
+        /*
         $posts = $this->getPostsFromRedis();
         if (collect($posts)->isEmpty()) {
             return $this->apiResponse(404, 'Posts Empty');
         }
+        */
         return $this->apiResponse(200, 'Posts Data', null, ['post' => $posts]);
     }
 
@@ -57,5 +65,14 @@ class PostRepository implements PostInterface
         ]);
         $this->setPostsIntoRedis();
         return $this->apiResponse(200, 'Post Was Update');
+    }
+
+    public function getPost($id)
+    {
+        $post = Post::with('carousels')->find($id);
+        if ($post) {
+            return $this->apiResponse(200, 'Post Information', null, $post);
+        }
+        return $this->apiResponse(422, 'Id Invalid');
     }
 }

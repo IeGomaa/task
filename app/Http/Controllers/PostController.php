@@ -9,9 +9,12 @@ use App\Http\Requests\Post\UpdatePostRequest;
 use App\Http\Services\Post\PostCheckImageService;
 use App\Http\Services\Post\PostDeleteImageService;
 use App\Http\Services\Post\PostUploadImageService;
+use App\Http\Traits\ApiResponseTrait;
+use App\Models\Post;
 
 class PostController extends Controller
 {
+    use ApiResponseTrait;
     private $postInterface;
     public function __construct(PostInterface $post)
     {
@@ -36,5 +39,10 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, PostCheckImageService $service)
     {
         return $this->postInterface->update($request, $service);
+    }
+
+    public function getPost($id)
+    {
+        return $this->postInterface->getPost($id);
     }
 }

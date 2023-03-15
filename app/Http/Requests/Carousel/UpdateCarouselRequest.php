@@ -26,7 +26,12 @@ class UpdateCarouselRequest extends FormRequest
         return [
             'post_id' => 'required|integer|exists:posts,id',
             'image' => 'image|mimes:png,jpg,webp,jpeg',
-            'video' => 'file'
+            'video' => 'file',
+            'pub_num' => 'integer',
+            'is_ad' => 'required|boolean',
+            'see_more' => 'required|string',
+            'slot_num' => 'integer',
+            'ad_script' => 'string'
         ];
     }
 }

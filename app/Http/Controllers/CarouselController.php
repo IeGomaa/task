@@ -2,66 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Interfaces\CarouselInterface;
 use App\Http\Requests\Carousel\CreateCarouselRequest;
+use App\Http\Requests\Carousel\DeleteCarouselRequest;
 use App\Http\Requests\Carousel\UpdateCarouselRequest;
-use App\Http\Services\Carousel\CarouselCheckImageService;
-use App\Http\Services\Carousel\CarouselDeleteImageService;
-use App\Http\Services\Carousel\CarouselUploadImageService;
-use App\Http\Traits\ApiResponseTrait;
-use App\Http\Traits\Carousel\CarouselTrait;
-use App\Models\Carousel;
+use App\Http\Services\Carousel\Image\CarouselCheckImageService;
+use App\Http\Services\Carousel\Image\CarouselDeleteImageService;
+use App\Http\Services\Carousel\Image\CarouselUploadImageService;
+use App\Http\Services\Carousel\Video\CarouselCheckVideoService;
+use App\Http\Services\Carousel\Video\CarouselDeleteVideoService;
+use App\Http\Services\Carousel\Video\CarouselUploadVideoService;
 
 class CarouselController extends Controller
 {
-    private $carouselModel;
-    use ApiResponseTrait, CarouselTrait;
-    public function __construct(Carousel $carousel)
+    private $carouselInterface;
+    public function __construct(CarouselInterface $carousel)
     {
-        $this->carouselModel = $carousel;
+        $this->carouselInterface = $carousel;
+    }
+
+    public function getCarousel($id)
+    {
+        return $this->carouselInterface->getCarousel($id);
     }
 
     public function index()
     {
-        return $this->apiResponse(200, 'Carousels Data', null, $this->getCarousels());
+        return $this->carouselInterface->index();
     }
 
-    public function create(CreateCarouselRequest $request, CarouselUploadImageService $service)
+    public function create(CreateCarouselRequest $request, CarouselUploadImageService $imageService, CarouselUploadVideoService $videoService)
     {
-        $image = $service->uploadImage($request->image);
-        $video = $service->uploadImage($request->video);
-        $this->carouselModel::create([
-            'image' => $image,
-            'video' => $video,
-            'post_id' => $request->post_id
-        ]);
-        return $this->apiResponse(200, 'Carousel Was Create');
+        return $this->carouselInterface->create($request, $imageService, $videoService);
     }
 
-    public function delete($carousel_id, CarouselDeleteImageService $service)
+    public function delete(DeleteCarouselRequest $request, CarouselDeleteImageService $imageService, CarouselDeleteVideoService $videoService)
     {
-        $carousel = $this->findCarouselById($carousel_id);
-        if ($carousel) {
-            $service->deleteImageInLocal($carousel->image);
-            $service->deleteImageInLocal($carousel->video);
-            $carousel->delete();
-            return $this->apiResponse(200, 'Carousel Was Delete');
-        }
-        return $this->apiResponse(200, 'Carousel Not Found');
+        return $this->carouselInterface->delete($request, $imageService, $videoService);
     }
 
-    public function update($carousel_id, UpdateCarouselRequest $request, CarouselCheckImageService $service)
+    public function update(UpdateCarouselRequest $request, CarouselCheckImageService $imageService, CarouselCheckVideoService $videoService)
     {
-        $carousel = $this->findCarouselById($carousel_id);
-        if ($carousel) {
-            $image = $service->checkImage($request->image, $carousel);
-            $video = $service->checkImage($request->video, $carousel);
-            $carousel->update([
-                'image' => $image,
-                'video' => $video,
-                'post_id' => $request->post_id
-            ]);
-            return $this->apiResponse(200, 'Carousel Was Update');
-        }
-        return $this->apiResponse(200, 'Carousel Not Found');
+        return $this->carouselInterface->update($request, $imageService, $videoService);
     }
 }

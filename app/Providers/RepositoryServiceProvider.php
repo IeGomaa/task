@@ -17,6 +17,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Http\Interfaces\PostInterface',
             'App\Http\Repositories\PostRepository'
         );
+        $this->app->bind(
+            'App\Http\Interfaces\CarouselInterface',
+            'App\Http\Repositories\CarouselRepository'
+        );
     }
 
     /**

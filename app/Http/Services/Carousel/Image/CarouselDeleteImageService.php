@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Carousel;
+namespace App\Http\Services\Carousel\Image;
 
 class CarouselDeleteImageService
 {

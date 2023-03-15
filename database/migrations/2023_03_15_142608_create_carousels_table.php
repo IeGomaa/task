@@ -17,6 +17,11 @@ class CreateCarouselsTable extends Migration
             $table->id();
             $table->text('image');
             $table->text('video');
+            $table->integer('pub_num')->nullable();
+            $table->boolean('is_ad');
+            $table->text('see_more');
+            $table->integer('slot_num')->nullable();
+            $table->string('ad_script')->nullable();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -8,4 +8,5 @@ interface PostInterface
     public function create($request, $service);
     public function delete($request, $service);
     public function update($request, $service);
+    public function getPost($id);
 }

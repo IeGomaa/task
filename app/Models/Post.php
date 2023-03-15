@@ -15,10 +15,10 @@ class Post extends Model
         'media'
     ];
 
-    public function carousels(): HasMany
-    {
-        return $this->hasMany(Carousel::class, 'post_id', 'id');
-    }
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function getMediaAttribute($value): string
     {

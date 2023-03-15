@@ -12,7 +12,17 @@ class Carousel extends Model
     protected $fillable = [
         'image',
         'video',
-        'post_id'
+        'post_id',
+        'pub_num',
+        'is_ad',
+        'see_more',
+        'slot_num',
+        'ad_script'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function posts(): BelongsTo
@@ -22,11 +32,11 @@ class Carousel extends Model
 
     public function getImageAttribute($value): string
     {
-        return 'uploaded/carousel/' . $value;
+        return 'uploaded/carousel/image/' . $value;
     }
 
     public function getVideoAttribute($value): string
     {
-        return 'uploaded/carousel/' . $value;
+        return 'uploaded/carousel/video/' . $value;
     }
 }

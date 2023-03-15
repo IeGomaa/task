@@ -8,7 +8,7 @@ trait PostTrait
 {
     private function getPosts()
     {
-        return $this->postModel::with('carousels')->get();
+        return $this->postModel::get();
     }
 
     private function findPostById($id)
