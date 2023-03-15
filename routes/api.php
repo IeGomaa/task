@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,11 @@ Route::group(['prefix' => 'post'], function () {
         Route::post('delete', 'delete');
         Route::post('update', 'update');
     });
+});
+
+Route::group(['prefix' => 'carousel'], function () {
+    Route::get('index', [CarouselController::class, 'index']);
+    Route::post('create', [CarouselController::class, 'create']);
+    Route::post('delete', [CarouselController::class, 'delete']);
+    Route::post('update', [CarouselController::class, 'update']);
 });

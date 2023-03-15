@@ -18,7 +18,11 @@ class PostRepository implements PostInterface
 
     public function index()
     {
-        return $this->apiResponse(200, 'Posts Data', null, $this->getPostsFromRedis());
+        $posts = $this->getPostsFromRedis();
+        if ($posts->isEmpty()) {
+            return $this->apiResponse(404, 'Posts Empty');
+        }
+        return $this->apiResponse(200, 'Posts Data', null, ['post' => $posts]);
     }
 
     public function create($request, $service)
@@ -30,7 +34,7 @@ class PostRepository implements PostInterface
             'content' => $request->body
         ]);
         $this->setPostsIntoRedis();
-        return $this->apiResponse(200, 'Post Was Create', null, $post);
+        return $this->apiResponse(200, 'Post Was Create', null, ['post' => $post]);
     }
 
     public function delete($request,  $service)

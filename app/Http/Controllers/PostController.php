@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Interfaces\PostInterface;
-use App\Http\Repositories\PostRepository;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Requests\Post\DeletePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
-use App\Http\Services\PostCheckImageService;
-use App\Http\Services\PostDeleteImageService;
-use App\Http\Services\PostUploadImageService;
+use App\Http\Services\Post\PostCheckImageService;
+use App\Http\Services\Post\PostDeleteImageService;
+use App\Http\Services\Post\PostUploadImageService;
 
 class PostController extends Controller
 {

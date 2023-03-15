@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Http\Services\Carousel;
 
-class PostDeleteImageService
+class CarouselDeleteImageService
 {
     public function deleteImageInLocal($image)
     {
